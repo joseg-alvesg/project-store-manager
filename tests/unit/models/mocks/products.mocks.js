@@ -12,7 +12,7 @@ const allResultMock = [
 const idResultMock = {
   "id": 1,
   "name": "Martelo de Thor"
-}
+}   
 
 module.exports = {
   allResultMock,
