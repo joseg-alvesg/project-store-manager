@@ -8,7 +8,7 @@ const findAll = async () => {
 };
 
 const findById = async (id) => {
-  const [result] = await conn.execute(
+  const [[result]] = await conn.execute(
     'SELECT * FROM StoreManager.products WHERE id =  ?',
     [id],
   );
