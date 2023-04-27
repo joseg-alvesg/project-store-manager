@@ -4,6 +4,7 @@ const { allResultMock, idResultMock, nameInsertMock, namePlusIdMock } = require(
 const { productService } = require("../../../src/services");
 const { productModel } = require("../../../src/models");
 const { all } = require("../../../src/routes/products.routes");
+const { validations } = require("../../../src/utils");
 
 describe("Testes de unidade do services products", function () {
   it("Recuperando a lista de produtos", async function () {
@@ -38,6 +39,19 @@ describe("Testes de unidade do services products", function () {
     const result = await productService.insert({ame:'Gersin'});
     expect(result.message).to.equal('"name" length must be at least 5 characters long');
   });
+
+  it('Atualizando um produto', async function () {
+    const mock = {id: 1, name: 'Gersin'}
+    sinon.stub(productModel, 'update').resolves(1)
+    const result = await productService.update(1, 'Gersin')
+    expect(result.message).to.deep.equal(mock)
+  })
+
+  it('testando atualizar um produto com erro', async function () {
+    sinon.stub(productModel, 'update').resolves(1);
+    const result = await productService.update(1, { ame: "Gersin" });
+    expect(result.message).to.deep.equal('"name" length must be at least 5 characters long')
+  })
 
   afterEach(function () {
     sinon.restore();

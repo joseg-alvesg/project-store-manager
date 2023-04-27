@@ -49,19 +49,51 @@ describe("Testes de unidade do controller products", function () {
     expect(res.json).to.have.been.calledWith({ message: 'Product not found'});
   });
 
-    it("inserindo um novo produto", async function () {
-      const res = {};
-      const req = { body: { name: 'Gersin' } };
-      res.status = sinon.stub().returns(res);
-      res.json = sinon.stub().returns();
-      sinon.stub(productService, 'insert')
-        .resolves({ type: null, message: 'Gersin' });
+  it("inserindo um novo produto", async function () {
+    const res = {};
+    const req = { body: { name: 'Gersin' } };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(productService, 'insert')
+      .resolves({ type: null, message: 'Gersin' });
 
-      await productController.insertNewProduct(req, res);
+    await productController.insertNewProduct(req, res);
 
-      expect(res.status).to.have.been.calledWith(201);
-      expect(res.json).to.have.been.calledWith("Gersin");
-    });
+    expect(res.status).to.have.been.calledWith(201);
+    expect(res.json).to.have.been.calledWith("Gersin");
+  });
+  
+  // it("inserindo um novo produto de maneira errada", async function () {
+  //   const res = {};
+  //   const req = { body: { name: 'Gersin' } };
+  //   res.status = sinon.stub().returns(res);
+  //   res.json = sinon.stub().returns();
+  //   sinon.stub(productService, "insert")
+  //     .resolves({type: "CREATION_ERROR" ,message: "error when insert new product"});
+
+  //   await productController.insertNewProduct(req, res);
+
+  //   const result = await productService.insert('asdasd')
+  //   expect(result).to.deep.equal({type: "CREATION_ERROR", message: "error when insert new product"})
+
+  //   expect(res.status).to.have.been.calledWith(404);
+  //   expect(res.json).to.have.been.calledWith({message: "error when insert new product"});
+  // });
+
+  it('atualizando um produto', async function () {
+    const res = {};
+    const req = { body: { name: "Gersin" }, params: {id: 1} };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon
+      .stub(productService, "insert")
+      .resolves({ type: null, message: "Gersin" });
+
+    await productController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(200);
+    expect(res.json).to.have.been.calledWith({ id: 1, name: "Gersin" });
+  })
 
   afterEach(function () {
     sinon.restore();
