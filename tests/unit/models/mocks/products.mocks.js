@@ -14,7 +14,12 @@ const idResultMock = {
   "name": "Martelo de Thor"
 }   
 
+const nameInsertMock = {
+  name: "Gersi"
+}
+
 module.exports = {
   allResultMock,
   idResultMock,
+  nameInsertMock,
 }
