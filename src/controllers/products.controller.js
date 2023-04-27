@@ -25,8 +25,22 @@ const insertNewProduct = async (req, res) => {
   res.status(201).json(message);
 };
 
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  const { type, message } = await productService.update(+id, name);
+  if (type === 'INVALID_VALUE') return res.status(400).json({ message });
+
+  if (type === 'UNPROCESSABLE_VALUE') { return res.status(422).json({ message }); }
+  
+  if (type) return res.status(404).json({ message });
+  
+  res.status(200).json(message);
+};
+
   module.exports = {
   findAllProducts,
   findById,
   insertNewProduct,
+  updateProduct,
 };
