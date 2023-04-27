@@ -14,7 +14,13 @@ const idResultMock = {
     "type": [null]
 }
 
+const nameInsertMock = { name: 'Gersin' }
+
+const namePlusIdMock = {id: 1, ...nameInsertMock}
+
 module.exports = {
   allResultMock,
   idResultMock,
+  nameInsertMock,
+  namePlusIdMock,
 }
