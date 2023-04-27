@@ -33,6 +33,12 @@ describe("Testes de unidade do services products", function () {
     expect(result.message).to.deep.equal(namePlusIdMock)
   })
 
+  it("testa a adicionar um novo produto de maneira errada", async function () {
+    sinon.stub(productModel, "insert").resolves(1);
+    const result = await productService.insert({ame:'Gersin'});
+    expect(result.message).to.equal('"name" length must be at least 5 characters long');
+  });
+
   afterEach(function () {
     sinon.restore();
   });
