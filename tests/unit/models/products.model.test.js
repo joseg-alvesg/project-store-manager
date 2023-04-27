@@ -27,6 +27,14 @@ describe("Testes de unidade do model products", function () {
     expect(result).to.equal(id)
   })
 
+  it('testa atualizar um produto', async function () {
+    const id = 1
+    product = 'MARRETA'
+    sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }])
+    const result = await productModel.update(id, product)
+    expect(result).to.deep.equal(1)
+  })
+
   afterEach(function () {
     sinon.restore();
   });
