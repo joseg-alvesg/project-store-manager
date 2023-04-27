@@ -17,7 +17,6 @@ describe("Testes de unidade do model products", function () {
   it("recuperando um produto pelo id", async function () {
     sinon.stub(connection, "execute").resolves([[idResultMock]]);
     const result = await productModel.findById(1);
-    console.log(result);
     expect(result).to.deep.equal(idResultMock);
   })
 
