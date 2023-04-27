@@ -14,7 +14,7 @@ const findById = async (id) => {
 const insert = async (product) => {
   const data = await productModel.insert(product);
   if (!data) return { type: 'CREATION_ERROR', message: 'error when insert new product' };
-  return { type: null, message: data };
+  return { type: null, message: { id: data, name: product } };
 };
 
 module.exports = {
