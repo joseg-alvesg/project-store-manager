@@ -15,7 +15,7 @@ const validateName = async (name) => {
 };
 
 const vavlidateProductName = async (name) => {
-  const { error, value } = await schemas.nameRequired.validate({ name });
+  const { error } = await schemas.nameRequired.validate({ name });
   if (error) {
     return { type: 'INVALID_VALUE', message: '"name" is required' };
   }
