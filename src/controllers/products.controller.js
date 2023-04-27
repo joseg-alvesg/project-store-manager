@@ -15,11 +15,17 @@ const findById = async (req, res) => {
 const insertNewProduct = async (req, res) => {
   const { name } = req.body;
   const { type, message } = await productService.insert(name);
+  
+  if (type === 'INVALID_VALUE') return res.status(400).json({ message });
+
+  if (type === 'UNPROCESSABLE_VALUE') return res.status(422).json({ message });
+
   if (type) return res.status(404).json({ message });
+
   res.status(201).json(message);
 };
 
-module.exports = {
+  module.exports = {
   findAllProducts,
   findById,
   insertNewProduct,
