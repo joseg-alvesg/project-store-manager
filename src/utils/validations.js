@@ -14,6 +14,14 @@ const validateName = async (name) => {
   return { type: null, message: '' };
 };
 
+const vavlidateProductName = async (name) => {
+  const { error, value } = await schemas.nameRequired.validate({ name });
+  if (error) {
+    return { type: 'INVALID_VALUE', message: '"name" is required' };
+  }
+};
+
 module.exports = {
   validateName,
+  vavlidateProductName,
 };
