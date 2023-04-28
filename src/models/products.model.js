@@ -41,10 +41,21 @@ const deleteRow = async (id) => {
   return affectedRows;
 };
 
+const searchByQuery = async (q) => {
+  const [result] = await conn.execute(
+    `
+    select * from StoreManager.products where name like ?;
+    `,
+    [`%${q}%`],
+  );
+  return result;
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   update,
   deleteRow,
+  searchByQuery,
 };

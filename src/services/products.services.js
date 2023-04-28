@@ -40,10 +40,16 @@ const deleteRow = async (id) => {
   return { type: null, message: '' };
 };
 
+const searchByQuery = async (q) => {
+  const data = await productModel.searchByQuery(q);
+  return { type: null, message: data };
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   update,
   deleteRow,
+  searchByQuery,
 };
