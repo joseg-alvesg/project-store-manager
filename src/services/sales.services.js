@@ -34,9 +34,27 @@ const deleteRow = async (id) => {
   return { type: null, message: '' };
 };
 
+const update = async (id, sale) => {
+  const error = await validations.validateProduct(sale);
+  if (error && error.type) return error;
+  
+  const allProduct = await Promise.all(sale.map((s) => productModel.findById(s.productId)));
+  const testProductId = allProduct.every((t) => t !== undefined);
+  if (!testProductId) return { type: 'PRODUCT_NOT_FOUND', message: 'Product not found' };
+  
+  const byId = await salesModel.findById(id);
+  if (byId.length < 1) return { type: 'PRODUCT_NOT_FOUND', message: 'Sale not found' };
+
+  await sale.forEach((s) => salesModel.update(id, s));
+
+   const forSale = { saleId: id, itemsUpdated: [...sale] };
+  return { type: null, message: forSale };
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   deleteRow,
+  update,
 };
