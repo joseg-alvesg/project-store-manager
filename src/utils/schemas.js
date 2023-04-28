@@ -8,6 +8,8 @@ const nameRequired = Joi.object({
   name: Joi.required(),
 });
 
+// dificulty
+
 module.exports = {
   nameSchema,
   nameRequired,
