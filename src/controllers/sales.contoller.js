@@ -33,11 +33,9 @@ const deleteSale = async (req, res) => {
 const updateSale = async (req, res) => {
   const { params: { id }, body } = req;
   const { type, message } = await salesService.update(+id, body);
-  if (type === 'INVALID_ID') return res.status(400).json({ message });
-  if (type === 'INVALID_QTY') return res.status(400).json({ message });
+  if (type === 'INVALID_ID' || type === 'INVALID_QTY') return res.status(400).json({ message });
   if (type === 'INVALID_LENGTH') return res.status(422).json({ message });
   if (type) return res.status(404).json({ message });
-  
   res.status(200).json(message);
 };
 
