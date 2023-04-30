@@ -36,8 +36,19 @@ const resultByIdMock = [
   },
 ];
 
+insertSaleMock = [
+  {
+    productId: 1,
+    quantity: 3000,
+  },
+  {
+    productId: 2,
+    quantity: 5000,
+  },
+];
 
 module.exports = {
   allResultMock,
   resultByIdMock,
+  insertSaleMock,
 }
