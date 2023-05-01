@@ -47,8 +47,15 @@ insertSaleMock = [
   },
 ];
 
+const simpleInsertMock = {
+  date: "2023-04-30T16:21:06.000Z",
+  productId: 1,
+  quantity: 5,
+};
+  
 module.exports = {
   allResultMock,
   resultByIdMock,
   insertSaleMock,
+  simpleInsertMock,
 }

@@ -5,6 +5,7 @@ const {
   allResultMock,
   resultByIdMock,
   insertSaleMock,
+  simpleInsertMock,
 } = require("./mocks/sale.mock");
 const { salesModel } = require("../../../src/models");
 
@@ -40,4 +41,17 @@ describe("Testa sales Model", function () {
 
     expect(result2).to.deep.equal([insertSaleMock]);
   });
+
+  it('deleta uma venda pelo id', async function () {
+    sinon.stub(connection, 'execute').resolves([{affectedRows: 1}])
+    const result = await salesModel.deleteRow(1)
+    expect(result).to.equal(1)
+  })
+
+  it('atualiza uma venda', async function () {
+    sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }])
+    const result = await salesModel.update(1, simpleInsertMock)
+    expect(result).to.equal(1)
+  })
+
 });
