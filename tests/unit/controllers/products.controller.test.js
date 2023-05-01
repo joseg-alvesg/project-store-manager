@@ -62,23 +62,6 @@ describe("Testes de unidade do controller products", function () {
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith("Gersin");
   });
-  
-  // it("inserindo um novo produto de maneira errada", async function () {
-  //   const res = {};
-  //   const req = { body: { name: 'Gersin' } };
-  //   res.status = sinon.stub().returns(res);
-  //   res.json = sinon.stub().returns();
-  //   sinon.stub(productService, "insert")
-  //     .resolves({type: "CREATION_ERROR" ,message: "error when insert new product"});
-
-  //   await productController.insertNewProduct(req, res);
-
-  //   const result = await productService.insert('asdasd')
-  //   expect(result).to.deep.equal({type: "CREATION_ERROR", message: "error when insert new product"})
-
-  //   expect(res.status).to.have.been.calledWith(404);
-  //   expect(res.json).to.have.been.calledWith({message: "error when insert new product"});
-  // });
 
   it('atualizando um produto', async function () {
     const res = {};
@@ -93,6 +76,29 @@ describe("Testes de unidade do controller products", function () {
 
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith({ id: 1, name: "Gersin" });
+  })
+
+  it('remove um produto', async function () {
+    const res = {}
+    const req = { params: { id: 1 } }
+    res.sendStatus = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(productService, 'deleteRow').resolves({ type: null, message: '' })
+    await productController.deleteProduct(req, res)
+    expect(res.sendStatus).to.have.been.calledWith(204);
+  })
+
+  it('tenta remover um produto que não existe', async function () {
+    const res = {}
+    const req = { params: { id: 9999 } }
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(productService, 'deleteRow')
+      .resolves({ type: 'INVALID_ID', message: 'Product not found' })
+    
+    await productController.deleteProduct(req, res)
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({message: 'Product not found'});
   })
 
   afterEach(function () {
