@@ -42,7 +42,6 @@ const deleteRow = async (id) => {
 
 const searchByQuery = async (q) => {
   const data = await productModel.searchByQuery(q);
-  console.log(data);
   return { type: null, message: data };
 };
 

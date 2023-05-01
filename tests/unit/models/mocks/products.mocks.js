@@ -18,6 +18,8 @@ const nameInsertMock = {
   name: "Gersi"
 }
 
+const searchNameByQuery = [ { id: 3, name: 'Escudo do Capitão América' } ]
+
 module.exports = {
   allResultMock,
   idResultMock,
