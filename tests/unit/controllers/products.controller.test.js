@@ -122,6 +122,52 @@ describe("Testes de unidade do controller products", function () {
     expect(res.json).to.have.been.calledWith({ id: 1, name: "Gersin" });
   })
 
+  it("atualiza um novo produto com erros", async function () {
+    const res = {};
+    const req = {params:{id: 1}, body: { nam: "Gersin" } };
+    const req2 = { params: { id: 1 }, body: { name: "Gers" } };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon
+      .stub(productService, 'update')
+      .onCall(0).resolves({ type: "INVALID_VALUE", message: '"name" is required' })
+      .onCall(1)
+      .resolves({
+        type: "UNPROCESSABLE_VALUE",
+        message: '"name" length must be at least 5 characters long',
+      });
+
+    await productController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({
+      message: '"name" is required',
+    });
+
+    await productController.updateProduct(req2, res);
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({
+      message: '"name" length must be at least 5 characters long',
+    });
+  });
+
+  it("atualiza um produto com id invalido", async function () {
+    const res = {};
+    const req = { params: { id: 9999 }, body: { name: "Gersin" } };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon
+      .stub(productService, "update")
+      .resolves({ type: "INVALID_ID", message: "Product not found" });
+
+    await productController.updateProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({
+      message: "Product not found",
+    });
+  });
+
   it('remove um produto', async function () {
     const res = {}
     const req = { params: { id: 1 } }
