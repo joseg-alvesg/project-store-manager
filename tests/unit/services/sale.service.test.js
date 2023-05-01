@@ -7,7 +7,7 @@ const { validations } = require("../../../src/utils");
 
 
 describe('test do service', function () {
-  afterEach(function () {
+afterEach(function () {
     sinon.restore();
   });
   
@@ -27,6 +27,14 @@ describe('test do service', function () {
     expect(result.message).to.deep.equal(saleFindByIdMock);
   })
 
+  it("retorna um venda por id com erro", async function () {
+    sinon.stub(salesModel, "findById").resolves([]);
+
+    const result = await salesService.findById(9999);
+
+    expect(result).to.deep.equal({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+  });
+
   it('insere uma nova venda a tabela', async function () {
     sinon.stub(salesModel, 'insertSale').resolves(3)
     sinon.stub(salesModel, "insertProduct").resolves(saleInsertResolveMock);
@@ -35,13 +43,8 @@ describe('test do service', function () {
     expect(result.message).to.deep.equal(saleInsertResolveMock)
   })
 
-  it('erros no insert', async function () {
-    sinon
-      .stub(validations, 'validateProduct')
-      .onCall(0).resolves({ type: "INVALID_ID", message: '"productId" is required' })
-      .onCall(1).resolves({ type: "INVALID_QTY", message: '"quantity" is required' })
-      .onCall(2).resolves({ type: 'INVALID_LENGTH', message: '"quantity" must be greater than or equal to 1' })
-    
+  it('erros no insert perla função validations', async function () {
+  
     const result = await salesService.insert(saleInsertMockErr1);
     expect(result).to.deep.equal({ type: "INVALID_ID", message: '"productId" is required' });
     sinon.restore();
@@ -52,6 +55,12 @@ describe('test do service', function () {
 
     const result3 = await salesService.insert(saleInsertMockErr3);
     expect(result3).to.deep.equal({ type: 'INVALID_LENGTH', message: '"quantity" must be greater than or equal to 1' })
+  })
+
+  it('testa erro do insert com productId errado', async function() {
+    sinon.stub(salesModel, 'insertSale').resolves([undefined, {affectedRows: 1}])
+    const result = await salesService.insert(wrongProductIdMock)
+    expect(result.message).to.deep.equal('Product not found')
   })
 
   it('deleteRow test', async function () {
@@ -69,11 +78,15 @@ describe('test do service', function () {
     sinon.stub(salesModel, 'update')
       .onCall(0).resolves([undefined, { affectedRows: 1 }])
       .onCall(1).resolves(saleInsertMock)
+    
     const result = await salesService.update(1, wrongProductIdMock)
     expect(result).to.deep.equal({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' })
 
     const result2 = await salesService.update(9999, saleInsertMock)
     expect(result2).to.deep.equal({ type: 'PRODUCT_NOT_FOUND', message: 'Sale not found' })
+
+    const result3 = await salesService.update(1, saleInsertMockErr1)
+    expect(result3.message).to.deep.equal('"productId" is required');
   })
 
   it('atualiza uma venda com sucesso', async function () {
