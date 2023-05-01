@@ -2,7 +2,7 @@ const chai = require("chai");
 const {expect} = chai
 const sinon = require("sinon");
 const sinonChai = require('sinon-chai')
-const { allResultMock, idResultMock, productListMock, newProductMock } = require("./mocks/products.mocks");
+const { productListMock, newProductMock } = require("./mocks/products.mocks");
 const { productService } = require("../../../src/services");
 const { productController } = require("../../../src/controllers");
 
