@@ -61,6 +61,7 @@ const update = async (id, sale) => {
     `,
     [sale.quantity, id, sale.productId],
   );
+  console.log(affectedRows);
   return affectedRows;
 };
 
